@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Service;
@@ -30,6 +31,11 @@ public class Main extends Application {
 
     //private int counter = 1;
     //private SimpleIntegerProperty counterProperty;
+    File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.23 22.53.26/combat.log");
+    //File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.24 18.48.10/combat.log");
+    //2018.04.22 23.20.55\"
+    long fileLength = file.length();
+
 
     private static String playerNick = "Palaleipa";
     private static int pvpKilled = 0;
@@ -86,9 +92,20 @@ public class Main extends Application {
 
     private static String gameMode = ""; //pve or pvp
 
+    private static BaseLogText pvpWinsBox   ;
+    private static BaseLogText pvpLosesBox  ;
+    private static BaseLogText pvpKilledBox ;
+    private static BaseLogText pvpDeathsBox ;
+
+    private static BaseLogText pveWinsBox   ;
+    private static BaseLogText pveLosesBox  ;
+    private static BaseLogText pveKilledBox ;
+    private static BaseLogText pveDeathsBox ;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        Platform.setImplicitExit(false);
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         FlowPane root = new FlowPane();
         //root.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
@@ -114,7 +131,7 @@ public class Main extends Application {
         CrossoutBattleLogFileReadService сrossoutBattleLogFileReadService = new CrossoutBattleLogFileReadService();
         сrossoutBattleLogFileReadService.start();
 
-        Label pveWinPercentagePropertyLabel = new Label();
+       /* Label pveWinPercentagePropertyLabel = new Label();
         pveWinPercentageProperty = new SimpleIntegerProperty(pveWinPercentage);
         pveWinPercentagePropertyLabel.textProperty().bind(pveWinPercentageProperty.asString());
 
@@ -225,17 +242,31 @@ public class Main extends Application {
         HBox pveCurrentDamagePercentage = new HBox();
         pveCurrentDamagePercentage.getChildren().addAll(
                 pvePercentageFromOverallTeamDamageText, pvePercentageFromOverallTeamDamageLabel
-        );
+        );*/
 
 
 
         //text.setFont(new Font(40));
 
+//pvpLosesText pvpKilledText pvpDeathsText
+
+        pvpWinsBox = new BaseLogText("pvpWins: ");
+        pvpLosesBox = new BaseLogText("pvpLoses: ");
+        pvpKilledBox = new BaseLogText("pvpKilled: ");
+        pvpDeathsBox = new BaseLogText("pvpDeaths: ");
+        pveWinsBox = new BaseLogText("pveWins: ");
+        pveLosesBox = new BaseLogText("pveLoses: ");
+        pveKilledBox = new BaseLogText("pveKilled: ");
+        pveDeathsBox = new BaseLogText("pveDeaths: ");
+
+
         root.getChildren().addAll(
 
-                pvpCurrent, pveCurrent, pvpDamage, pveDamage,
+                pvpWinsBox, pvpLosesBox, pvpKilledBox, pvpDeathsBox,
+                pveWinsBox, pveLosesBox, pveKilledBox, pveDeathsBox
+                /*pvpCurrent, pveCurrent, pvpDamage, pveDamage,
 
-                pvpCurrentDamagePercentage, pveCurrentDamagePercentage
+                pvpCurrentDamagePercentage, pveCurrentDamagePercentage*/
 
 
 
@@ -294,12 +325,29 @@ public class Main extends Application {
                 switch (gameMode){
                     case "pve":
                         pveKilled++;
-                        pveKilledProperty.set(pveKilled);
+                        ///////pveKilledBox.setProperty(pveKilled);
+
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run(){
+                                pveKilledBox.setProperty(pveKilled);
+                            }
+                        });
+
                         break;
                     case "pvp":
                         pvpKilled++;
-                        pvpKilledProperty.set(pvpKilled);
-                        break;
+
+
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run(){
+                                pvpKilledBox.setProperty(pvpKilled);
+                        }
+                        });
+
+
+                    break;
                 }
             }
 
@@ -317,15 +365,15 @@ public class Main extends Application {
                         pveCurrentBattlePlayerDamage = pveCurrentBattlePlayerDamage + Float.valueOf(lel);
                         pveOverallSessionDamage = pveOverallSessionDamage + Float.valueOf(lel);
 
-                        pveCurrentBattlePlayerDamageProperty.set(pveCurrentBattlePlayerDamage);
-                        pveOverallSessionDamageProperty.set(pveOverallSessionDamage);
+                        //pveCurrentBattlePlayerDamageProperty.set(pveCurrentBattlePlayerDamage);
+                        //pveOverallSessionDamageProperty.set(pveOverallSessionDamage);
                         break;
                     case "pvp":
                         pvpCurrentBattlePlayerDamage = pvpCurrentBattlePlayerDamage + Float.valueOf(lel);
                         pvpOverallSessionDamage = pvpOverallSessionDamage + Float.valueOf(lel);
 
-                        pvpCurrentBattlePlayerDamageProperty.set(pvpCurrentBattlePlayerDamage);
-                        pvpOverallSessionDamageProperty.set(pvpOverallSessionDamage);
+                        //pvpCurrentBattlePlayerDamageProperty.set(pvpCurrentBattlePlayerDamage);
+                        //pvpOverallSessionDamageProperty.set(pvpOverallSessionDamage);
                         break;
                 }
 
@@ -341,11 +389,11 @@ public class Main extends Application {
                 switch (gameMode){
                     case "pve":
                         pveCurrentBattleTeamDamage = pveCurrentBattleTeamDamage + Float.valueOf(lel);
-                        pveCurrentBattlePlayerDamageProperty.set(pveCurrentBattleTeamDamage);
+                        //pveCurrentBattleTeamDamageProperty.set(pveCurrentBattleTeamDamage);
                         break;
                     case "pvp":
                         pvpCurrentBattleTeamDamage = pvpCurrentBattleTeamDamage + Float.valueOf(lel);
-                        pvpCurrentBattlePlayerDamageProperty.set(pvpCurrentBattleTeamDamage);
+                        //pvpCurrentBattleTeamDamageProperty.set(pvpCurrentBattleTeamDamage);
                         break;
                 }
             }
@@ -358,11 +406,29 @@ public class Main extends Application {
                 switch (gameMode){
                     case "pve":
                         pveDeaths++;
-                        pveDeathsProperty.set(pveDeaths);
+                        //pveDeathsProperty.set(pveDeaths);
+                        ////pveDeathsBox.setProperty(pveDeaths);
+
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run(){
+                                pveDeathsBox.setProperty(pveDeaths);
+                            }
+                        });
+
                         break;
                     case "pvp":
                         pvpDeaths++;
-                        pvpDeathsProperty.set(pvpDeaths);
+
+
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run(){
+                                pvpDeathsBox.setProperty(pvpDeaths);
+                            }
+                        });
+
+
                         break;
                 }
             }
@@ -375,47 +441,90 @@ public class Main extends Application {
                         if (line.contains("winner team 2")) {
                             //pveWinsPropertyLabel
                             pveLoses++;
-                            pveLosesProperty.set(pveLoses);
+
+
+                            Platform.runLater(new Runnable(){
+                                @Override
+                                public void run(){
+                                    pveLosesBox.setProperty(pveLoses);
+                                }
+                            });
 
                         } else {
                             pveWins++;
-                            pveWinsProperty.set(pveWins);
+
+
+
+                            Platform.runLater(new Runnable(){
+                                @Override
+                                public void run(){
+                                    pveWinsBox.setProperty(pveWins);
+                                }
+                            });
 
                         }
 
-                        System.out.println("pveWinPercentage: " + (pveWins/(pveLoses+pveWins))*100);
-
-                        pveWinPercentage = (pveWins/(pveLoses+pveWins))*100;
-
-
+                        //System.out.println("pveWinPercentage: " + (pveWins/(pveLoses+pveWins))*100);
+                        //pveWinPercentage = (pveWins/(pveLoses+pveWins))*100;
                         break;
                     case "pvp":
                         if (line.contains("winner team 2")) {
                             switch (playerTeam) {
                                 case 1:
                                     pvpLoses++;
-                                    pvpLosesProperty.set(pvpLoses);
+
+                                    Platform.runLater(new Runnable(){
+                                        @Override
+                                        public void run(){
+                                            pvpLosesBox.setProperty(pvpLoses);
+                                        }
+                                    });
+
                                     break;
                                 case 2:
                                     pvpWins++;
-                                    pvpWinsProperty.set(pvpWins);
+
+                                    Platform.runLater(new Runnable(){
+                                        @Override
+                                        public void run(){
+                                            pvpWinsBox.setProperty(pvpWins);
+                                        }
+                                    });
+
                                     break;
                             }
                         } else {
                             switch (playerTeam) {
                                 case 1:
                                     pvpWins++;
-                                    pvpWinsProperty.set(pvpWins);
+
+
+
+                                    Platform.runLater(new Runnable(){
+                                        @Override
+                                        public void run(){
+                                            pvpWinsBox.setProperty(pvpWins);
+                                        }
+                                    });
+
                                     break;
                                 case 2:
                                     pvpLoses++;
-                                    pvpLosesProperty.set(pvpLoses);
+
+
+                                    Platform.runLater(new Runnable(){
+                                        @Override
+                                        public void run(){
+                                            pvpLosesBox.setProperty(pvpLoses);
+                                        }
+                                    });
+
 
                                     break;
                             }
                         }
-                        System.out.println("pvpWinPercentage: " + (pvpWins/(pvpLoses+pvpWins))*100);
-                        pvpWinPercentage = (pvpWins/(pvpLoses+pvpWins))*100;
+                        //System.out.println("pvpWinPercentage: " + (pvpWins/(pvpLoses+pvpWins))*100);
+                        //pvpWinPercentage = (pvpWins/(pvpLoses+pvpWins))*100;
 
 
                         break;
@@ -479,12 +588,8 @@ public class Main extends Application {
                 @Override
                 protected Void call() throws Exception {
 
-                    File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.23 22.53.26/combat.log");
-                    //2018.04.22 23.20.55
-                    //File file = new File("D://md//dc//My Games//Crossout//logs//2018.04.21 10.40.21//combat.log");
-                    //System.out.println(file.getAbsolutePath());
                     if (file.exists() && file.canRead()) {
-                        long fileLength = file.length();
+                        fileLength = file.length();
                         try {
                             readFile(file, 0L);
                         } catch (Exception e) {
@@ -494,11 +599,13 @@ public class Main extends Application {
                         while (true) {
 
                             if (fileLength < file.length()) {
+
                                 try {
                                     readFile(file, fileLength);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+
                                 fileLength = file.length();
                             }
 
