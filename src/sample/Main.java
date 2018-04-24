@@ -31,56 +31,34 @@ public class Main extends Application {
 
     //private int counter = 1;
     //private SimpleIntegerProperty counterProperty;
-    File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.23 22.53.26/combat.log");
+    File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.25 01.37.09/combat.log");
     //File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.24 18.48.10/combat.log");
     //2018.04.22 23.20.55\"
     long fileLength = file.length();
 
 
     private static String playerNick = "Palaleipa";
-    private static int pvpKilled = 0;
-    private static int pveKilled = 0;
-    private static SimpleIntegerProperty pvpKilledProperty = new SimpleIntegerProperty();
-    private static SimpleIntegerProperty pveKilledProperty = new SimpleIntegerProperty();
-
-    private static int pvpDeaths = 0;
-    private static int pveDeaths = 0;
-    private static SimpleIntegerProperty pvpDeathsProperty = new SimpleIntegerProperty();
-    private static SimpleIntegerProperty pveDeathsProperty = new SimpleIntegerProperty();
 
     private static float pveCurrentBattlePlayerDamage = 0;
     private static float pvpCurrentBattlePlayerDamage = 0;
-    private static SimpleFloatProperty pveCurrentBattlePlayerDamageProperty = new SimpleFloatProperty();
-    private static SimpleFloatProperty pvpCurrentBattlePlayerDamageProperty = new SimpleFloatProperty();
-
     private static float pveCurrentBattleTeamDamage = 0;
     private static float pvpCurrentBattleTeamDamage = 0;
-    private static SimpleFloatProperty pveCurrentBattleTeamDamageProperty = new SimpleFloatProperty();
-    private static SimpleFloatProperty pvpCurrentBattleTeamDamageProperty = new SimpleFloatProperty();
-
     private static float pvpOverallSessionDamage = 0;
     private static float pveOverallSessionDamage = 0;
-    private static SimpleFloatProperty pvpOverallSessionDamageProperty = new SimpleFloatProperty();
-    private static SimpleFloatProperty pveOverallSessionDamageProperty = new SimpleFloatProperty();
-
     private static float pvpPercentageFromOverallTeamDamage = 0;
     private static float pvePercentageFromOverallTeamDamage = 0;
-    private static SimpleFloatProperty pvpPercentageFromOverallTeamDamageProperty = new SimpleFloatProperty();
-    private static SimpleFloatProperty pvePercentageFromOverallTeamDamageProperty = new SimpleFloatProperty();
-
 
     private static int pvpWins = 0;
     private static int pvpLoses = 0;
     private static int pveWins = 0;
     private static int pveLoses = 0;
-    private static SimpleIntegerProperty pvpWinsProperty = new SimpleIntegerProperty();
-    private static SimpleIntegerProperty pvpLosesProperty = new SimpleIntegerProperty();
-    private static SimpleIntegerProperty pveWinsProperty = new SimpleIntegerProperty();
-    private static SimpleIntegerProperty pveLosesProperty = new SimpleIntegerProperty();
+    private static int pvpKilled = 0;
+    private static int pveKilled = 0;
+    private static int pvpDeaths = 0;
+    private static int pveDeaths = 0;
 
     private static int pvpWinPercentage = 0;
     private static SimpleIntegerProperty pvpWinPercentageProperty;
-
     private static int pveWinPercentage = 0;
     private static SimpleIntegerProperty pveWinPercentageProperty;
 
@@ -96,11 +74,19 @@ public class Main extends Application {
     private static BaseLogText pvpLosesBox  ;
     private static BaseLogText pvpKilledBox ;
     private static BaseLogText pvpDeathsBox ;
-
     private static BaseLogText pveWinsBox   ;
     private static BaseLogText pveLosesBox  ;
     private static BaseLogText pveKilledBox ;
     private static BaseLogText pveDeathsBox ;
+
+    private static BaseLogTextFloat pveCurrentBattlePlayerDamageBox;
+    private static BaseLogTextFloat pvpCurrentBattlePlayerDamageBox;
+    private static BaseLogTextFloat pveCurrentBattleTeamDamageBox;
+    private static BaseLogTextFloat pvpCurrentBattleTeamDamageBox;
+    private static BaseLogTextFloat pvpOverallSessionDamageBox;
+    private static BaseLogTextFloat pveOverallSessionDamageBox;
+    private static BaseLogTextFloat pvpPercentageFromOverallTeamDamageBox;
+    private static BaseLogTextFloat pvePercentageFromOverallTeamDamageBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -127,129 +113,6 @@ public class Main extends Application {
             }
         });
 
-
-        CrossoutBattleLogFileReadService сrossoutBattleLogFileReadService = new CrossoutBattleLogFileReadService();
-        сrossoutBattleLogFileReadService.start();
-
-       /* Label pveWinPercentagePropertyLabel = new Label();
-        pveWinPercentageProperty = new SimpleIntegerProperty(pveWinPercentage);
-        pveWinPercentagePropertyLabel.textProperty().bind(pveWinPercentageProperty.asString());
-
-        Label pvpWinPercentagePropertyLabel = new Label();
-        pvpWinPercentageProperty = new SimpleIntegerProperty(pvpWinPercentage);
-        pvpWinPercentagePropertyLabel.textProperty().bind(pvpWinPercentageProperty.asString());
-
-
-        Text pvpWinsText  = new Text("pvpWins:");
-        Label pvpWinsPropertyLabel = new Label();
-        pvpWinsPropertyLabel.textProperty().bind(pvpWinsProperty.asString());
-
-        Text pvpLosesText  = new Text(" pvpLoses:");
-        Label pvpLosesPropertyLabel = new Label();
-        pvpLosesPropertyLabel.textProperty().bind(pvpLosesProperty.asString());
-
-        Text pveWinsText  = new Text("pveWins:");
-        Label pveWinsPropertyLabel = new Label();
-        pveWinsPropertyLabel.textProperty().bind(pveWinsProperty.asString());
-
-        Text pveLosesText  = new Text(" pveLoses:");
-        Label pveLosesPropertyLabel = new Label();
-        pveLosesPropertyLabel.textProperty().bind(pveLosesProperty.asString());
-
-        Text pvpKilledText = new Text(" pvpKilled:");
-        Label pvpKilledPropertyLabel = new Label();
-        pvpKilledPropertyLabel.textProperty().bind(pvpKilledProperty.asString());
-
-        Text pveKilledText = new Text(" pveKilled:");
-        Label pveKilledPropertyLabel = new Label();
-        pveKilledPropertyLabel.textProperty().bind(pveKilledProperty.asString());
-
-        Text pvpDeathsText = new Text(" pvpDeaths:");
-        Label pvpDeathsPropertyLabel = new Label();
-        pvpDeathsPropertyLabel.textProperty().bind(pvpDeathsProperty.asString());
-
-        Text pveDeathsText = new Text(" pveDeaths:");
-        Label pveDeathsPropertyLabel = new Label();
-        pveDeathsPropertyLabel.textProperty().bind(pveDeathsProperty.asString());
-
-        Text pveCurrentBattlePlayerDamageText = new Text("pveCurrentBattlePlayerDamage:");
-        Label pveCurrentBattlePlayerDamagePropertyLabel = new Label();
-        pveCurrentBattlePlayerDamagePropertyLabel.textProperty().bind(pveCurrentBattlePlayerDamageProperty.asString());
-
-        Text pvpCurrentBattlePlayerDamageText = new Text("pvpCurrentBattlePlayerDamage: ");
-        Label pvpCurrentBattlePlayerDamagePropertyLabel = new Label();
-        pvpCurrentBattlePlayerDamagePropertyLabel.textProperty().bind(pvpCurrentBattlePlayerDamageProperty.asString());
-
-        Text pveCurrentBattleTeamDamageText = new Text(" pveCurrentBattleTeamDamage:");
-        Label pveCurrentBattleTeamDamagePropertyLabel = new Label();
-        pveCurrentBattleTeamDamagePropertyLabel.textProperty().bind(pveCurrentBattleTeamDamageProperty.asString());
-
-        Text pvpCurrentBattleTeamDamageText = new Text(" pvpCurrentBattleTeamDamage:");
-        Label pvpCurrentBattleTeamDamagePropertyLabel = new Label();
-        pvpCurrentBattleTeamDamagePropertyLabel.textProperty().bind(pvpCurrentBattleTeamDamageProperty.asString());
-
-        Text pvpOverallSessionDamageText = new Text(" pvpOverallSessionDamage:");
-        Label pvpOverallSessionDamagePropertyLabel = new Label();
-        pvpOverallSessionDamagePropertyLabel.textProperty().bind(pvpOverallSessionDamageProperty.asString());
-
-        Text pveOverallSessionDamageText = new Text(" pveOverallSessionDamage:");
-        Label pveOverallSessionDamagePropertyLabel = new Label();
-        pveOverallSessionDamagePropertyLabel.textProperty().bind(pveOverallSessionDamageProperty.asString());
-
-        Text pvpPercentageFromOverallTeamDamageText = new Text("pvpPercentageFromOverallTeamDamage: ");
-        Label pvpPercentageFromOverallTeamDamageLabel = new Label();
-        pvpPercentageFromOverallTeamDamageLabel.textProperty().bind(pvpPercentageFromOverallTeamDamageProperty.asString());
-
-
-        Text pvePercentageFromOverallTeamDamageText = new Text("pvePercentageFromOverallTeamDamage: ");
-        Label pvePercentageFromOverallTeamDamageLabel = new Label();
-        pvePercentageFromOverallTeamDamageLabel.textProperty().bind(pvePercentageFromOverallTeamDamageProperty.asString());
-
-
-        Text pvpWinPercentage  = new Text("pvpWinPercentage");
-
-
-        HBox pvpCurrent = new HBox();
-        pvpCurrent.getChildren().addAll(
-                pvpWinsText,pvpWinsPropertyLabel,pvpLosesText,pvpLosesPropertyLabel,pvpKilledText,pvpKilledPropertyLabel,pvpDeathsText,pvpDeathsPropertyLabel
-        );
-
-        HBox pveCurrent = new HBox();
-        pveCurrent.getChildren().addAll(
-                pveWinsText,pveWinsPropertyLabel,pveLosesText,pveLosesPropertyLabel,pveKilledText,pveKilledPropertyLabel,pveDeathsText,pveDeathsPropertyLabel
-        );
-
-        HBox pvpDamage = new HBox();
-        pvpDamage.getChildren().addAll(
-
-                pvpCurrentBattlePlayerDamageText, pvpCurrentBattlePlayerDamagePropertyLabel,
-                pvpCurrentBattleTeamDamageText, pvpCurrentBattleTeamDamagePropertyLabel,
-                pvpOverallSessionDamageText, pvpOverallSessionDamagePropertyLabel
-        );
-
-        HBox pveDamage = new HBox();
-        pveDamage.getChildren().addAll(
-                pveCurrentBattlePlayerDamageText, pveCurrentBattlePlayerDamagePropertyLabel,
-                pveCurrentBattleTeamDamageText, pveCurrentBattleTeamDamagePropertyLabel,
-                pveOverallSessionDamageText, pveOverallSessionDamagePropertyLabel
-
-        );
-        HBox pvpCurrentDamagePercentage = new HBox();
-        pvpCurrentDamagePercentage.getChildren().addAll(
-                pvpPercentageFromOverallTeamDamageText, pvpPercentageFromOverallTeamDamageLabel
-        );
-
-        HBox pveCurrentDamagePercentage = new HBox();
-        pveCurrentDamagePercentage.getChildren().addAll(
-                pvePercentageFromOverallTeamDamageText, pvePercentageFromOverallTeamDamageLabel
-        );*/
-
-
-
-        //text.setFont(new Font(40));
-
-//pvpLosesText pvpKilledText pvpDeathsText
-
         pvpWinsBox = new BaseLogText("pvpWins: ");
         pvpLosesBox = new BaseLogText("pvpLoses: ");
         pvpKilledBox = new BaseLogText("pvpKilled: ");
@@ -259,22 +122,38 @@ public class Main extends Application {
         pveKilledBox = new BaseLogText("pveKilled: ");
         pveDeathsBox = new BaseLogText("pveDeaths: ");
 
+        pveCurrentBattlePlayerDamageBox = new BaseLogTextFloat("pveCurrentBattlePlayerDamage: ");
+        pvpCurrentBattlePlayerDamageBox = new BaseLogTextFloat("pvpCurrentBattlePlayerDamage: ");
+        pveCurrentBattleTeamDamageBox = new BaseLogTextFloat("pveCurrentBattleTeamDamage: ");
+        pvpCurrentBattleTeamDamageBox = new BaseLogTextFloat("pvpCurrentBattleTeamDamage: ");
+        pvpOverallSessionDamageBox = new BaseLogTextFloat("pvpOverallSessionDamage: ");
+        pveOverallSessionDamageBox = new BaseLogTextFloat("pveOverallSessionDamage: ");
+        pvpPercentageFromOverallTeamDamageBox =new BaseLogTextFloat("pvpPercentageFromOverallTeamDamage: ");
+        pvePercentageFromOverallTeamDamageBox = new BaseLogTextFloat("pvePercentageFromOverallTeamDamage: ");
+
+        CrossoutBattleLogFileReadService сrossoutBattleLogFileReadService = new CrossoutBattleLogFileReadService();
+        сrossoutBattleLogFileReadService.start();
 
         root.getChildren().addAll(
 
                 pvpWinsBox, pvpLosesBox, pvpKilledBox, pvpDeathsBox,
-                pveWinsBox, pveLosesBox, pveKilledBox, pveDeathsBox
-                /*pvpCurrent, pveCurrent, pvpDamage, pveDamage,
+                pveWinsBox, pveLosesBox, pveKilledBox, pveDeathsBox,
 
-                pvpCurrentDamagePercentage, pveCurrentDamagePercentage*/
-
-
-
+                pveCurrentBattlePlayerDamageBox,
+        pvpCurrentBattlePlayerDamageBox,
+        pveCurrentBattleTeamDamageBox,
+        pvpCurrentBattleTeamDamageBox,
+        pvpOverallSessionDamageBox,
+        pveOverallSessionDamageBox,
+        pvpPercentageFromOverallTeamDamageBox,
+        pvePercentageFromOverallTeamDamageBox
         );
+
+
         primaryStage.setTitle("Crossout Stats");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         //primaryStage.setScene(new Scene(root, 300, 275, Color.TRANSPARENT));
-        primaryStage.setScene(new Scene(root, 800, 275));
+        primaryStage.setScene(new Scene(root, 400, 275));
         primaryStage.show();
     }
 
@@ -306,7 +185,6 @@ public class Main extends Application {
             }
 
             if (line.contains("nickname: " + playerNick)){
-
                 if (line.contains("team: 2")){
                     playerTeam = 2;
                     //System.out.println("pvpGameTeam: " + playerTeam);
@@ -314,39 +192,17 @@ public class Main extends Application {
                     playerTeam = 1;
                     //System.out.println("pvpGameTeam: " + playerTeam);
                 }
-
             }
-                //nickname: Palaleipa           , team: 1,
-
-                //check for player team
-                //check for endGame
 
             if (line.contains("killer: " + playerNick)){
                 switch (gameMode){
                     case "pve":
                         pveKilled++;
-                        ///////pveKilledBox.setProperty(pveKilled);
-
-                        Platform.runLater(new Runnable(){
-                            @Override
-                            public void run(){
-                                pveKilledBox.setProperty(pveKilled);
-                            }
-                        });
-
+                        pveKilledBox.setProperty(pveKilled);
                         break;
                     case "pvp":
                         pvpKilled++;
-
-
-                        Platform.runLater(new Runnable(){
-                            @Override
-                            public void run(){
-                                pvpKilledBox.setProperty(pvpKilled);
-                        }
-                        });
-
-
+                        pvpKilledBox.setProperty(pvpKilled);
                     break;
                 }
             }
@@ -365,15 +221,15 @@ public class Main extends Application {
                         pveCurrentBattlePlayerDamage = pveCurrentBattlePlayerDamage + Float.valueOf(lel);
                         pveOverallSessionDamage = pveOverallSessionDamage + Float.valueOf(lel);
 
-                        //pveCurrentBattlePlayerDamageProperty.set(pveCurrentBattlePlayerDamage);
-                        //pveOverallSessionDamageProperty.set(pveOverallSessionDamage);
+                        pveCurrentBattlePlayerDamageBox.setProperty(pveCurrentBattlePlayerDamage);
+                        pveOverallSessionDamageBox.setProperty(pveOverallSessionDamage);
                         break;
                     case "pvp":
                         pvpCurrentBattlePlayerDamage = pvpCurrentBattlePlayerDamage + Float.valueOf(lel);
                         pvpOverallSessionDamage = pvpOverallSessionDamage + Float.valueOf(lel);
 
-                        //pvpCurrentBattlePlayerDamageProperty.set(pvpCurrentBattlePlayerDamage);
-                        //pvpOverallSessionDamageProperty.set(pvpOverallSessionDamage);
+                        pvpCurrentBattlePlayerDamageBox.setProperty(pvpCurrentBattlePlayerDamage);
+                        pvpOverallSessionDamageBox.setProperty(pvpOverallSessionDamage);
                         break;
                 }
 
@@ -389,79 +245,42 @@ public class Main extends Application {
                 switch (gameMode){
                     case "pve":
                         pveCurrentBattleTeamDamage = pveCurrentBattleTeamDamage + Float.valueOf(lel);
-                        //pveCurrentBattleTeamDamageProperty.set(pveCurrentBattleTeamDamage);
+                        pveCurrentBattleTeamDamageBox.setProperty(pveCurrentBattleTeamDamage);
                         break;
                     case "pvp":
                         pvpCurrentBattleTeamDamage = pvpCurrentBattleTeamDamage + Float.valueOf(lel);
-                        //pvpCurrentBattleTeamDamageProperty.set(pvpCurrentBattleTeamDamage);
+                        pvpCurrentBattleTeamDamageBox.setProperty(pvpCurrentBattleTeamDamage);
                         break;
                 }
             }
 
-  //wa          pvpPercentageFromOverallTeamDamageProperty.set(pvpCurrentBattlePlayerDamage/pvpCurrentBattleTeamDamage*100.0f);
-//            pvePercentageFromOverallTeamDamageProperty.set(pveCurrentBattlePlayerDamage/pveCurrentBattleTeamDamage*100.0f);
+            pvpPercentageFromOverallTeamDamageBox.setProperty(pvpCurrentBattlePlayerDamage/pvpCurrentBattleTeamDamage*100.0f);
+            pvePercentageFromOverallTeamDamageBox.setProperty(pveCurrentBattlePlayerDamage/pveCurrentBattleTeamDamage*100.0f);
 
 
             if (line.contains("Victim: " + playerNick)){
                 switch (gameMode){
                     case "pve":
                         pveDeaths++;
-                        //pveDeathsProperty.set(pveDeaths);
-                        ////pveDeathsBox.setProperty(pveDeaths);
-
-                        Platform.runLater(new Runnable(){
-                            @Override
-                            public void run(){
-                                pveDeathsBox.setProperty(pveDeaths);
-                            }
-                        });
-
+                        pveDeathsBox.setProperty(pveDeaths);
                         break;
                     case "pvp":
                         pvpDeaths++;
-
-
-                        Platform.runLater(new Runnable(){
-                            @Override
-                            public void run(){
-                                pvpDeathsBox.setProperty(pvpDeaths);
-                            }
-                        });
-
-
+                        pvpDeathsBox.setProperty(pvpDeaths);
                         break;
                 }
             }
-
 
             if (line.contains("Gameplay finish,")) {
 
                 switch (gameMode){
                     case "pve":
                         if (line.contains("winner team 2")) {
-                            //pveWinsPropertyLabel
                             pveLoses++;
-
-
-                            Platform.runLater(new Runnable(){
-                                @Override
-                                public void run(){
-                                    pveLosesBox.setProperty(pveLoses);
-                                }
-                            });
-
+                            pveLosesBox.setProperty(pveLoses);
                         } else {
                             pveWins++;
-
-
-
-                            Platform.runLater(new Runnable(){
-                                @Override
-                                public void run(){
-                                    pveWinsBox.setProperty(pveWins);
-                                }
-                            });
-
+                            pveWinsBox.setProperty(pveWins);
                         }
 
                         //System.out.println("pveWinPercentage: " + (pveWins/(pveLoses+pveWins))*100);
@@ -472,24 +291,11 @@ public class Main extends Application {
                             switch (playerTeam) {
                                 case 1:
                                     pvpLoses++;
-
-                                    Platform.runLater(new Runnable(){
-                                        @Override
-                                        public void run(){
-                                            pvpLosesBox.setProperty(pvpLoses);
-                                        }
-                                    });
-
+                                    pvpLosesBox.setProperty(pvpLoses);
                                     break;
                                 case 2:
                                     pvpWins++;
-
-                                    Platform.runLater(new Runnable(){
-                                        @Override
-                                        public void run(){
-                                            pvpWinsBox.setProperty(pvpWins);
-                                        }
-                                    });
+                                    pvpWinsBox.setProperty(pvpWins);
 
                                     break;
                             }
@@ -497,44 +303,21 @@ public class Main extends Application {
                             switch (playerTeam) {
                                 case 1:
                                     pvpWins++;
-
-
-
-                                    Platform.runLater(new Runnable(){
-                                        @Override
-                                        public void run(){
-                                            pvpWinsBox.setProperty(pvpWins);
-                                        }
-                                    });
-
+                                    pvpWinsBox.setProperty(pvpWins);
                                     break;
                                 case 2:
                                     pvpLoses++;
-
-
-                                    Platform.runLater(new Runnable(){
-                                        @Override
-                                        public void run(){
-                                            pvpLosesBox.setProperty(pvpLoses);
-                                        }
-                                    });
-
-
+                                    pvpLosesBox.setProperty(pvpLoses);
                                     break;
                             }
                         }
                         //System.out.println("pvpWinPercentage: " + (pvpWins/(pvpLoses+pvpWins))*100);
                         //pvpWinPercentage = (pvpWins/(pvpLoses+pvpWins))*100;
-
-
                         break;
                 }
-
                 gameMode = "";
-
             }
 
-            //19:10:37.719  CMBT   | ===== Gameplay finish, reason: no_cars, winner team 1, win reason: MORE_CARS_LEFT, battle time: 75.7 sec =====
 
             if (line.contains("Gameplay finish,")){
 
@@ -543,7 +326,6 @@ public class Main extends Application {
 
                 System.out.println("pveDeaths: " + pveDeaths);
                 System.out.println("pvpDeaths: " + pvpDeaths);
-
 
                 System.out.println("pvpWins: " + pvpWins);
                 System.out.println("pvpLooses: " + pvpLoses);

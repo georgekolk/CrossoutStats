@@ -7,37 +7,35 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-import java.util.concurrent.Executor;
-
 /**
- * Created by user on 24.04.2018.
+ * Created by user on 25.04.2018.
  */
-public class BaseLogText extends HBox {
-
+public class BaseLogTextFloat extends HBox {
     private Text text;
     private Label label;
-    private SimpleIntegerProperty integerProperty;
+    private SimpleFloatProperty floatProperty;
 
-    public BaseLogText(String text) {
+    public BaseLogTextFloat(String text) {
         this.text = new Text(text);
         this.label = new Label();
-        this.integerProperty = new SimpleIntegerProperty(0);
-        this.label.textProperty().bind(this.integerProperty.asString());
+        this.floatProperty = new SimpleFloatProperty(0f);
+        this.label.textProperty().bind(this.floatProperty.asString());
         this.getChildren().addAll(
                 this.text,this.label
         );
     }
 
-    public void setProperty(int newValue){
+    public void setProperty(float newValue){
         //this.integerProperty.set(newValue);
 
         Platform.runLater(new Runnable(){
             @Override
             public void run(){
-                integerProperty.set(newValue);
+                floatProperty.set(newValue);
             }
         });
 
     }
+
 
 }
