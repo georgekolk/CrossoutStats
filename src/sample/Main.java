@@ -2,22 +2,14 @@ package sample;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -27,14 +19,10 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    //SimpleFloatProperty
-
-    //private int counter = 1;
-    //private SimpleIntegerProperty counterProperty;
-    File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.25 01.37.09/combat.log");
+    File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.27 02.58.34/combat.log");
     //File file = new File("D:/md/dc/My Games/Crossout/logs/2018.04.24 18.48.10/combat.log");
-    //2018.04.22 23.20.55\"
-    long fileLength = file.length();
+
+    private long fileLength = file.length();
 
 
     private static String playerNick = "Palaleipa";
@@ -70,14 +58,14 @@ public class Main extends Application {
 
     private static String gameMode = ""; //pve or pvp
 
-    private static BaseLogText pvpWinsBox   ;
-    private static BaseLogText pvpLosesBox  ;
-    private static BaseLogText pvpKilledBox ;
-    private static BaseLogText pvpDeathsBox ;
-    private static BaseLogText pveWinsBox   ;
-    private static BaseLogText pveLosesBox  ;
-    private static BaseLogText pveKilledBox ;
-    private static BaseLogText pveDeathsBox ;
+    private static BaseLogText pvpWinsBox;
+    private static BaseLogText pvpLosesBox;
+    private static BaseLogText pvpKilledBox;
+    private static BaseLogText pvpDeathsBox;
+    private static BaseLogText pveWinsBox;
+    private static BaseLogText pveLosesBox;
+    private static BaseLogText pveKilledBox;
+    private static BaseLogText pveDeathsBox;
 
     private static BaseLogTextFloat pveCurrentBattlePlayerDamageBox;
     private static BaseLogTextFloat pvpCurrentBattlePlayerDamageBox;
@@ -88,10 +76,13 @@ public class Main extends Application {
     private static BaseLogTextFloat pvpPercentageFromOverallTeamDamageBox;
     private static BaseLogTextFloat pvePercentageFromOverallTeamDamageBox;
 
+    private static BaseLogTextFloat pvpWinPercentageBox;
+    private static BaseLogTextFloat pveWinPercentageBox;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Platform.setImplicitExit(false);
+        //Platform.setImplicitExit(false);
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         FlowPane root = new FlowPane();
         //root.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
@@ -131,6 +122,22 @@ public class Main extends Application {
         pvpPercentageFromOverallTeamDamageBox =new BaseLogTextFloat("pvpPercentageFromOverallTeamDamage: ");
         pvePercentageFromOverallTeamDamageBox = new BaseLogTextFloat("pvePercentageFromOverallTeamDamage: ");
 
+        pvpWinPercentageBox = new BaseLogTextFloat("pvpWinrate: ");
+        pvpWinPercentageBox.setStyleCSS(
+                "-fx-font-size: 12pt; \n" +
+                        "-fx-border-color: rgb(49, 89, 23); \n" +
+                        "-fx-font-family: \"Impact\";" +
+                        "-fx-text-fill: \"red\";"
+        );
+
+        pveWinPercentageBox = new BaseLogTextFloat("pveWinrate: ");
+        pveWinPercentageBox.setStyleCSS(
+                "-fx-font-size: 12pt; \n" +
+                        "-fx-border-color: rgb(49, 89, 23); \n" +
+                        "-fx-font-family: \"Impact\";" +
+                        "-fx-text-fill: \"red\";"
+        );
+
         CrossoutBattleLogFileReadService сrossoutBattleLogFileReadService = new CrossoutBattleLogFileReadService();
         сrossoutBattleLogFileReadService.start();
 
@@ -146,7 +153,11 @@ public class Main extends Application {
         pvpOverallSessionDamageBox,
         pveOverallSessionDamageBox,
         pvpPercentageFromOverallTeamDamageBox,
-        pvePercentageFromOverallTeamDamageBox
+        pvePercentageFromOverallTeamDamageBox,
+
+                pvpWinPercentageBox,
+                pveWinPercentageBox
+
         );
 
 
@@ -169,9 +180,6 @@ public class Main extends Application {
         in.skip(fileLength);
 
         while((line = in.readLine()) != null){
-                //11:11:32.853  CMBT   | ===== Gameplay 'Pve' started, map 'arizona_castle' ======
-
-
             System.out.println(line);
 
             if (line.contains("Gameplay '")){
@@ -284,7 +292,7 @@ public class Main extends Application {
                         }
 
                         //System.out.println("pveWinPercentage: " + (pveWins/(pveLoses+pveWins))*100);
-                        //pveWinPercentage = (pveWins/(pveLoses+pveWins))*100;
+                        pveWinPercentageBox.setProperty((pveWins * 100.0f) / (pveWins+pveLoses));
                         break;
                     case "pvp":
                         if (line.contains("winner team 2")) {
@@ -313,6 +321,7 @@ public class Main extends Application {
                         }
                         //System.out.println("pvpWinPercentage: " + (pvpWins/(pvpLoses+pvpWins))*100);
                         //pvpWinPercentage = (pvpWins/(pvpLoses+pvpWins))*100;
+                        pvpWinPercentageBox.setProperty((pvpWins * 100.0f) / (pvpWins+pvpLoses));
                         break;
                 }
                 gameMode = "";
@@ -343,10 +352,12 @@ public class Main extends Application {
                 System.out.println("pvp percentage from overall team damage: " + pvpCurrentBattlePlayerDamage/pvpCurrentBattleTeamDamage*100.0f);
                 System.out.println("pve percentage from overall team damage: " + pveCurrentBattlePlayerDamage/pveCurrentBattleTeamDamage*100.0f);
 
-                /*float correct = 25;
-                float questionNum = 100;
-                float percent = (pvpCurrentBattlePlayerDamage * 100.0f) / pvpCurrentBattleTeamDamage;
-                System.out.println("pvp percentage from overall team damage: " + percent);*/
+                float percentPvpWins = (pvpWins * 100.0f) / (pvpWins+pvpLoses);
+                System.out.println("pvp Wins: " + percentPvpWins);
+                float percentPveWins = (pveWins * 100.0f) / (pveWins+pveLoses);
+                System.out.println("pve Wins: " + percentPveWins);
+
+
 
                 pvpCurrentBattlePlayerDamage = 0;
                 pveCurrentBattlePlayerDamage = 0;

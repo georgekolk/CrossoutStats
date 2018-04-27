@@ -14,6 +14,7 @@ public class BaseLogTextFloat extends HBox {
     private Text text;
     private Label label;
     private SimpleFloatProperty floatProperty;
+    private String styleCSS;
 
     public BaseLogTextFloat(String text) {
         this.text = new Text(text);
@@ -35,6 +36,11 @@ public class BaseLogTextFloat extends HBox {
             }
         });
 
+    }
+
+    public void setStyleCSS(String styleCSS){
+        this.label.setStyle(styleCSS);
+        this.text.setStyle(styleCSS);
     }
 
 
